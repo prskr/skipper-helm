@@ -1,0 +1,40 @@
+language: python
+
+os:
+  - linux
+
+env:
+  global:
+    - HELM_VERSION=2.9.1
+    - APPR_VERSION=0.7.4
+    - APPR_URL=https://github.com/app-registry/appr/releases/download/v$APPR_VERSION/appr-linux-x64
+    - CHART_VERSION=0.0.1
+    - secure: "StEnJfHoo8U2BNdDryECGCw7T64jeoWoDlW6oyKskxGmXciOiqo7P8izSH6OK77+iixjbckoQBjqlBtWXtx6YBuuZJxL12izU8Vtvnd7KOrMBtF7YNuEZs0B5UOif+m9c427Nmil47pNLVAqgexM5Pb3KaWqnBEx16HFzx3o5kWvHiumQlKunoE/X3/2SXo8Pd973XQL/sGGwhguGfKjfYtPfhq1rFpUJqNUHxlQfOVNRzM6tQ6UzJstyce/QNhTKk4Fevi0S+SgqXB8cTD9VH9vSYtSqIBSuhfim2uPYVympg70NTHMjmgMODWYV8wtkqXc7kfdLGY95RudQllcA9+8rCdqQUtbGdokYY0BA7P1Dxpq3PKjToRQBJR+/1jDODR6UHPQlT+kHThGaS9zRusLtlD7wGXwm18v8ADJJmRXA4pMsAj+v4XNfdhgGdFLER47LdsUm9rF7/+z50eUk1ofeKyAe8yHrxWrSbH9LurO+LVe5B9A98pRbYZkW4hbYjo3LvnwtIFEaXlq/cMDPEyY5mrFyn64SPrxE018gAzQBeLBAkthnhj8pZBbc3tmyll82QWlLbEowIBf3wK7f1jW25Fdg3rhdKIgy1ird/KmJVN94eTXvJu9jF4QqdogtJtTPnVGztpzglKAW1113s21M+0r8dYSte5R/Ivr2Sc="
+
+install:
+  - curl "https://kubernetes-helm.storage.googleapis.com/helm-v${HELM_VERSION}-linux-amd64.tar.gz" | tar zx
+  - PATH=`pwd`/linux-amd64/:$PATH
+  - mkdir -p ~/.helm/plugins
+  - git clone https://github.com/app-registry/appr-helm-plugin.git ~/.helm/plugins/registry
+  - curl -L "$APPR_URL" -o ~/.helm/plugins/registry/appr
+  - chmod +x ~/.helm/plugins/registry/appr
+  - helm version --client
+  - helm init --client-only
+  - helm registry version quay.io
+
+script:
+  - helm lint --set prometheusOperator.create=true,skipper.ingressClass=skipper,skipper.logLevel=INFO skipper/
+  - helm registry login -u baez -p "$QUAY_IO_TOKEN" quay.io
+  - cd skipper/
+  - helm registry delete-package quay.io/baez/skipper@${CHART_VERSION} || true
+  - helm registry push -v ${CHART_VERSION} --namespace baez --channel alpha quay.io
+
+deploy:
+  provider: script
+  script:
+    - helm registry login -u baez+travis -p "$QUAY_IO_TOKEN" quay.io
+    - cd skipper/
+    - helm registry push -v ${TRAVIS_TAG} --namespace baez --channel stable quay.io
+  on:
+    tags: true
+    all_branches: false

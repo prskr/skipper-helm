@@ -1,0 +1,61 @@
+# configuration values for Skipper
+skipper:
+  # Overwrites the log level if set
+  logLevel: ''
+  # enables ingress class filtering if set
+  ingressClass: ''
+  # update strategy for the daemonset
+  updateStrategy:
+    type: RollingUpdate
+  # endpoint settings for the Skipper endpoint
+  webEndpoint:
+    name: skipper
+    port: 9999
+  # metrics endpoint configuration
+  metricsEndpoint:
+    name: skipper-metrics
+    port: 9911
+  # image settings for the Skipper daemonset
+  image:
+    repository: registry.opensource.zalan.do/pathfinder/skipper
+    tag: v0.9.202
+    pullPolicy: IfNotPresent
+
+# configuration for Prometheus-Operator
+prometheusOperator:
+  # label for Prometheus job
+  jobLabel: skipper-ingress
+  # name of the ServiceMonitor resource
+  monitorName: skipper-metrics
+  # Namespace where Prometheus-Operator is deployed
+  # all ServiceMonitors have to be deployed in the Namespace where Prometheus-Operator
+  # is deployed
+  namespace: monitoring
+  # enable Prometheus-Operator support
+  create: false
+  # Interval how often Prometheus will scrape metrics
+  scrapeInterval: 30s
+  # Additonal labels assigned to the ServiceMonitor
+  # by default Prometheus-Operator uses the following default as selector
+  labels:
+    prometheus: kube-prometheus
+
+# Configuration for resource alocation of the daemonset
+resources:
+  limits:
+   cpu: 200m
+   memory: 200Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+# Configuration for Kubernetes RBAC
+rbac:
+  # enable RBAC support
+  create: false
+  # name of the ServiceAccount
+  svcAccountName: skipper
+  # Name of the ClusterRole for Skipper
+  clusterRoleName: skipper
+  # Name of the ClusterRoleBinding
+  clusterRoleBindingName: skipper

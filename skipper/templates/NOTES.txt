@@ -1,0 +1,53 @@
+1. Skipper
+
+{{ if .Values.skipper.ingressClass }}
+Got `ingressClass` filter.
+This Skipper deployment will only care about deployments with the following annotation:
+
+kubernetes.io/ingress.class: {{ .Values.skipper.ingressClass | quote }}
+
+{{ else }}
+Didn't receive an `ingressClass` filter.
+Skipper will try to publish every ingress created.
+{{ end }}
+
+{{ if .Values.skipper.logLevel }}
+Set Skipper log level to {{ .Values.skipper.logLevel | quote }}
+{{ end }}
+
+Deployed the following Skipper image:
+
+{{ .Values.skipper.image.repository }}:{{ .Values.skipper.image.tag }}
+
+2. RBAC
+
+{{ if .Values.rbac.create }}
+Created RBAC resources:
+
+* ServiceAccount
+* ClusterRole
+* ClusterRoleBinding
+{{ else }}
+RBAC is disabled. If RBAC is enabled in your Kubernetes cluster pass the flag `--set rbac.create=true` to the `helm` CLI when you deploy this chart or update your custom `values.yaml` file.
+{{ end }}
+
+3. Prometheus-Operator
+
+{{ if .Values.prometheusOperator.create }}
+Prometheus-Operator integration is enabled.
+Added the following resources:
+
+* ServiceMonitor
+
+Prometheus job label is: {{ .Values.prometheusOperator.jobLabel }}.
+
+Name of the ServiceMonitor is: {{ .Values.prometheusOperator.monitorName }}.
+
+ServiceMonitor was deployed in namespace: {{ .Values.prometheusOperator.namespace }}.
+
+{{ else }}
+
+Prometheus-Operator integration is disabled.
+Didn't deploy any resources.
+
+{{ end }}
