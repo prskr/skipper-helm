@@ -12,7 +12,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: {{ template "skipper.name" . | quote }}
+      app: {{ template "skipper.name" . }}
       chart: {{ template "skipper.chart" . }}
       release: {{ .Release.Name }}
       heritage: {{ .Release.Service }}
@@ -23,7 +23,7 @@ spec:
     metadata:
       name: {{ template "skipper.fullname" . }}
       labels:
-        app: {{ template "skipper.name" . | quote }}
+        app: {{ template "skipper.name" . }}
         chart: {{ template "skipper.chart" . }}
         release: {{ .Release.Name }}
         heritage: {{ .Release.Service }}
