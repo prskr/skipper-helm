@@ -23,7 +23,7 @@ install:
   - helm registry version quay.io
 
 script:
-  - helm lint --set prometheusOperator.create=true,skipper.ingressClass=skipper,skipper.logLevel=INFO skipper/
+  - helm lint --set prometheusOperator.create=true,skipper.ingressClass=skipper,skipper.logLevel=INFO,rbac.create=true skipper/
   - helm registry login -u baez -p "$QUAY_IO_TOKEN" quay.io
   - cd skipper/
   - helm registry delete-package quay.io/baez/skipper@${CHART_VERSION} || true

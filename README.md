@@ -2,6 +2,18 @@
 
 [![Build Status](https://travis-ci.org/baez90/skipper-helm.svg?branch=master)](https://travis-ci.org/baez90/skipper-helm)
 
+- [Helm chart for Skipper](#helm-chart-for-skipperhttps---githubcom-zalando-skipper)
+    - [Helm registry](#helm-registry)
+    - [Deployment](#deployment)
+        - [Minimal](#minimal)
+        - [Other namespace than `default`](#other-namespace-than-default)
+        - [Enable RBAC](#enable-rbachttps---kubernetesio-docs-admin-authorization-rbac)
+        - [Enable prometheus-operator](#enable-prometheus-operatorhttps---githubcom-coreos-prometheus-operator)
+        - [Debugging](#debugging)
+        - [Enable `ingress.class` annotation handling](#enable-ingressclass-annotation-handling)
+        - [Deploy with `values.yaml` file](#deploy-with-valuesyaml-file)
+        - [Running multiple instances](#running-multiple-instances)
+
 ## Helm registry
 
 The chart is available at the [Quay.io registry](https://quay.io/application/baez/skipper).

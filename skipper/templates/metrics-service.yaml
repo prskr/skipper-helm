@@ -3,6 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: "{{ template "skipper.fullname" . }}-metrics"
+  namespace: {{ .Release.Namespace }}
   labels:
     app: {{ template "skipper.name" . }}
     chart: {{ template "skipper.chart" . }}
