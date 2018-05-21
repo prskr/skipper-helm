@@ -1,0 +1,24 @@
+{{ if .Values.prometheusOperator.create }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ template "skipper.fullname" . }}-metrics"
+  labels:
+    app: {{ template "skipper.name" . }}
+    chart: {{ template "skipper.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: ingress
+spec:
+  ports:
+    - name: {{ .Values.skipper.metricsEndpoint.name }}
+      port: {{ .Values.skipper.metricsEndpoint.port }}
+      targetPort: {{ .Values.skipper.metricsEndpoint.port }}
+      protocol: TCP
+  selector:
+    app: "{{ template "skipper.name" . }}"
+    chart: {{ template "skipper.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: ingress
+{{ end }}
