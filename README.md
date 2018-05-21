@@ -1,5 +1,7 @@
 # Helm chart for [Skipper](https://github.com/zalando/skipper)
 
+[![Build Status](https://travis-ci.org/baez90/skipper-helm.svg?branch=master)](https://travis-ci.org/baez90/skipper-helm)
+
 ## Helm registry
 
 The chart is available at the [Quay.io registry](https://quay.io/application/baez/skipper).
