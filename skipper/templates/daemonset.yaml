@@ -35,7 +35,7 @@ spec:
 {{ end }}
       containers:
       - name: skipper-ingress
-        image: "{{ .Values.skipper.image.repository }}:{{ .Values.skipper.image.tag }}"
+        image: "{{ .Values.skipper.image.repository -}}:{{- .Values.skipper.image.tag }}"
         imagePullPolicy: {{ .Values.skipper.image.pullPolicy }}
         ports:
         - name: {{ .Values.skipper.webEndpoint.name }}
@@ -49,16 +49,16 @@ spec:
           - "skipper"
           - "-kubernetes"
           - "-kubernetes-in-cluster"
-          - "-address=:{{ .Values.skipper.webEndpoint.port }}"
+          - "-address=:{{- .Values.skipper.webEndpoint.port }}"
           - "-proxy-preserve-host"
           - "-serve-host-metrics"
           - "-enable-ratelimits"
           - "-experimental-upgrade"
           - "-metrics-exp-decay-sample"
           - "-kubernetes-https-redirect=true"
-{{ if .Values.skipper.logLevel }}
-          - "-application-log-level={{ .Values.skipper.logLevel }}"
-{{ end }}
+{{- if .Values.skipper.logLevel }}
+          - "-application-log-level={{- .Values.skipper.logLevel }}"
+{{- end }}
           - "-lb-healthcheck-interval=3s"
           - "-enable-connection-metrics"
           - "-reverse-source-predicate"
@@ -66,9 +66,9 @@ spec:
           - "-metrics-flavour=prometheus"
           - "-support-listener=:{{ .Values.skipper.metricsEndpoint.port }}"
 {{ end }}
-{{ if .Values.skipper.ingressClass }}
+{{- if .Values.skipper.ingressClass }}
           - "--kubernetes-ingress-class={{ .Values.skipper.ingressClass }}"
-{{ end }}
+{{- end }}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
 

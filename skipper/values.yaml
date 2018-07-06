@@ -18,7 +18,7 @@ skipper:
   # image settings for the Skipper daemonset
   image:
     repository: registry.opensource.zalan.do/pathfinder/skipper
-    tag: v0.9.202
+    tag: v0.10.38
     pullPolicy: IfNotPresent
 
 # configuration for Prometheus-Operator
