@@ -11,5 +11,7 @@ rules:
 - apiGroups: [""]
   resources: ["namespaces", "services", "endpoints"]
   verbs: ["get"]
+- nonResourceURLs: ["/healthz", "/healthz/*"]
+  verbs: ["get", "post"]
   {{ end }}
   {{ end }}
