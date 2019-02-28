@@ -9,8 +9,8 @@ rules:
   resources: ["ingresses", ]
   verbs: ["get", "list"]
 - apiGroups: [""]
-  resources: ["namespaces", "services", "endpoints"]
-  verbs: ["get"]
+  resources: ["namespaces", "services", "endpoints", "pods"]
+  verbs: ["get", "list"]
 - nonResourceURLs: ["/healthz", "/healthz/*"]
   verbs: ["get", "post"]
   {{ end }}
