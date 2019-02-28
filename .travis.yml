@@ -5,7 +5,7 @@ os:
 
 env:
   global:
-    - HELM_VERSION=2.9.1
+    - HELM_VERSION=2.13.0
     - APPR_VERSION=0.7.4
     - APPR_URL=https://github.com/app-registry/appr/releases/download/v$APPR_VERSION/appr-linux-x64
     - CHART_VERSION=0.0.1
